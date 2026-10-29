@@ -1,0 +1,13 @@
+{
+  "version": "2026-10-28-draft.1",
+  "date": "2026-10-28",
+  "status": "draft",
+  "effective_date": null,
+  "domain": "legal.edacheck.ru",
+  "documents": {
+    "privacy": "Политика обработки персональных данных",
+    "terms": "Пользовательское соглашение",
+    "deletion": "Удаление аккаунта и обращения"
+  },
+  "tools": {"pandoc": "3.6.4", "typst": "0.15.1"}
+}
