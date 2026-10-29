@@ -3,7 +3,7 @@
 import html
 import json
 
-from common import ROOT, digest, document, execute, registration_links, version_url
+from common import ROOT, digest, document, execute, format_date, registration_links, version_url
 
 ASSETS = {"index.html", "style.css", "CNAME", ".nojekyll", "registration-links.json"}
 
@@ -45,7 +45,7 @@ def render(config, versions, output):
         destination = output / slug
         destination.mkdir()
         pdf_name = f"{slug}-{config['version']}.pdf"
-        download = f'<p><a href="{pdf_name}" download>Скачать эту редакцию в PDF</a></p>'
+        download = f'<p><a href="{pdf_name}" download>Скачать документ (PDF)</a></p>'
         markup = page(config, title, download + f"<article>{article}</article>", "../")
         (destination / "index.html").write_text(markup, encoding="utf-8")
         pdf_path = destination / pdf_name
@@ -65,7 +65,12 @@ def render(config, versions, output):
     intro = '<h1>Юридические документы Едачек</h1>'
     if config["status"] == "draft":
         intro += '<p>Проекты для согласования. Не вступили в силу.</p>'
-    intro += '<p>Выберите документ в меню. На каждой странице доступна та же редакция в PDF.</p>'
+    else:
+        intro += f'<p>Редакция {config["version"]} от {format_date(config["date"])}.</p>'
+        intro += f'<p>Дата вступления в силу: {format_date(config["effective_date"])}.</p>'
+    intro += ('<p>В настоящем разделе размещены документы, определяющие условия использования '
+              'приложения "Едачек" и порядок обработки персональных данных. '
+              'Для каждого документа доступна соответствующая редакция в формате PDF.</p>')
     assets = {"index.html": page(config, "Юридические документы", intro).encode("utf-8"),
               "style.css": (ROOT / "style.css").read_bytes(),
               "CNAME": (config["domain"] + "\n").encode("ascii"), ".nojekyll": b"",
