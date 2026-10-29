@@ -1,8 +1,8 @@
 {
-  "version": "2026-10-28-draft.1",
+  "version": "2026-10-28.1",
   "date": "2026-10-28",
-  "status": "draft",
-  "effective_date": null,
+  "status": "approved",
+  "effective_date": "2026-10-28",
   "domain": "legal.edacheck.ru",
   "documents": {
     "privacy": "Политика обработки персональных данных",

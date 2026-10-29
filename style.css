@@ -5,7 +5,7 @@ nav { display: flex; flex-wrap: wrap; gap: .7rem 1.3rem; margin-bottom: 2rem; }
 h1, h2 { line-height: 1.25; margin-top: 2rem; }
 h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); }
 h2 { font-size: 1.35rem; }
-blockquote { border-left: .25rem solid #a66b00; margin: 1.5rem 0; padding: .1rem 1rem; }
+blockquote { border-left: .15rem solid #888; margin: 1.5rem 0; padding: .1rem 1rem; }
 footer { border-top: 1px solid #888; margin-top: 3rem; padding-top: 1rem; }
 @media (prefers-color-scheme: dark) { a { color: #9ac7ff; } }
 @media print { nav, footer { display: none; } body { max-width: none; padding: 0; } }
