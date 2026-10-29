@@ -59,6 +59,13 @@ def tools(config):
     return versions
 
 
+def format_date(value):
+    parsed = date.fromisoformat(value)
+    months = ("января", "февраля", "марта", "апреля", "мая", "июня",
+              "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    return f"{parsed.day} {months[parsed.month - 1]} {parsed.year} года"
+
+
 def document(config, slug):
     source = (ROOT / "documents" / f"{slug}.md").read_text(encoding="utf-8")
     expected = f"# {config['documents'][slug]}\n"
@@ -66,11 +73,13 @@ def document(config, slug):
         raise ValueError(f"Unexpected title: {slug}")
     if re.search(r"\[(?:ДОМЕН|EMAIL|НАЗВАНИЕ|ПЕРЕЧЕНЬ|СТРАНА)", source):
         raise ValueError(f"Unfilled placeholder: {slug}")
-    if config["status"] == "draft":
-        status = "Проект для согласования. Не вступил в силу."
+    metadata = [f"**Редакция:** {config['version']}",
+                f"**Дата редакции:** {format_date(config['date'])}"]
+    if config["status"] == "approved":
+        metadata.append(f"**Дата вступления в силу:** {format_date(config['effective_date'])}")
     else:
-        status = f"Вступает в силу: {config['effective_date']}."
-    notice = f"> {status} Версия: {config['version']}. Дата редакции: {config['date']}."
+        metadata.insert(0, "**Статус:** проект документа (не вступил в силу)")
+    notice = "\n>\n".join(f"> {line}" for line in metadata)
     content = source.replace(expected, expected + f"\n{notice}\n", 1)
     for target in config["documents"]:
         current = f"https://{config['domain']}/{target}/"

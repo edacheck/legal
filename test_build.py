@@ -20,6 +20,7 @@ class BuildChecks(unittest.TestCase):
             "_build", ".git", ".tools", "__pycache__"))
         self.output = self.root / "_build" / "site"
         self.config = json.loads((self.root / "edition.json").read_text(encoding="utf-8"))
+        self.configure(version="test-draft.1", status="draft", effective_date=None)
         self.run_build()
 
     def command(self, arguments, success=True):
@@ -83,6 +84,10 @@ class BuildChecks(unittest.TestCase):
         self.configure(version="2026-10-29.1", status="approved", effective_date="2026-11-01")
         self.run_build()
         archived = self.output / "versions" / self.config["version"]
+        markup = (archived / "terms/index.html").read_text(encoding="utf-8")
+        self.assertIn("Дата вступления в силу:", markup)
+        self.assertIn("1 ноября 2026 года", markup)
+        self.assertNotIn("не вступил в силу", markup.lower())
         before = self.snapshot(archived)
         self.run_build()
         self.assertEqual(before, self.snapshot(archived))
